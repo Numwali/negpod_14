@@ -1,0 +1,46 @@
+#!/bin/bash
+
+students_file="students-list_1023.txt"
+
+while true; do
+    echo "Welcome to ALU Registration System"
+    echo "1. Create student record"
+    echo "2. View all students"
+    echo "3. Delete student record"
+    echo "4. Update student record"
+    echo "5. Exit"
+    read -p "Please select an option: " choice
+
+    case $choice in
+        1)
+            read -p "Enter student email: " email
+            read -p "Enter student age: " age
+            read -p "Enter student ID: " id
+            echo "$email, $age, $id" >> "$students_file"
+            echo "Student record created."
+            ;;
+        2)
+            echo "All students:"
+            cat "$students_file"
+            ;;
+        3)
+            read -p "Enter student ID to delete: " delete_id
+            sed -i "/\b$delete_id\b/d" "$students_file"
+            echo "Student record deleted."
+            ;;
+        4)
+            read -p "Enter student ID to update: " update_id
+            read -p "Enter new email: " new_email
+            read -p "Enter new age: " new_age
+            sed -i "s/\b$update_id\b[^,]*/$new_email, $new_age/" "$students_file"
+            echo "Student record updated."
+            ;;
+        5)
+            echo "Exiting application."
+            exit 0
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
+    esac
+done
